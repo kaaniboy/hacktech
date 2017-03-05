@@ -23,6 +23,8 @@ $(document).ready(function() {
 	var db = firebase.database();
 	var storage = firebase.storage();
 
+	db.ref('roomba_position/').update({'x': 0, 'y': 0});
+
 	var ctx = $("#motion_graph");
 	chart = new Chart(ctx, {
 		type: 'line',
@@ -34,7 +36,7 @@ $(document).ready(function() {
 		    }]
 		},
 		options: {
-				showLines: false,
+				showLines: true,
 		    scales: {
 						xAxes: [{
 							 position: 'bottom',

@@ -118,7 +118,6 @@ def run_command(message):
 			else:
 				angle = angle - approx_angle(degree)
 
-			angle = abs(angle - approx_angle(degree))
 			time.sleep(0.5)
 		else:
 			print("Not a valid command: {}".format(message))
