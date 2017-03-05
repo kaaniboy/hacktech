@@ -8,6 +8,8 @@ var sensorsData;
 var velocityData;
 var wheelDropData;
 
+var chart;
+
 var config = {
 	apiKey: "AIzaSyD7Br51b3F296kpbD3PcvRbaz1jYaL_Oi8",
 	authDomain: "hacktech2017-2d0d8.firebaseapp.com",
@@ -21,6 +23,39 @@ $(document).ready(function() {
 	var db = firebase.database();
 	var storage = firebase.storage();
 
+	var ctx = $("#motion_graph");
+	chart = new Chart(ctx, {
+		type: 'line',
+		data: {
+		    datasets: [{
+						pointBackgroundColor: "red",
+		        label: 'Roomba Position',
+		        data: []
+		    }]
+		},
+		options: {
+				showLines: false,
+		    scales: {
+						xAxes: [{
+							 position: 'bottom',
+							 type: 'linear',
+							 ticks: {
+									 min: -30,
+									 max: 30,
+									 stepSize: 3
+							 }
+					 }],
+						yAxes: [{
+                ticks: {
+                    max: 30,
+                    min: -30,
+                    stepSize: 3
+                }
+            }]
+		    }
+		}
+	});
+
 	retrieveQueue();
 	setInterval(retrieveQueue, QUEUE_INTERVAL);
 
@@ -33,8 +68,16 @@ $(document).ready(function() {
 		});
 	});
 
+	console.log(chart);
+
 	db.ref('roomba_position/').on('value', function(snapshot) {
 		var data = snapshot.val();
+
+		var newData = {'x': data.x, 'y': data.y};
+		newData.fillColor = 'red';
+
+		chart.data.datasets[0].data.push(newData);
+		chart.update();
 		console.log(data);
 	});
 
@@ -90,47 +133,6 @@ $(document).ready(function() {
 
 		$('#wheel_drop_left').html(wheelDropData.wheel_drop_left.toString());
 		$('#wheel_drop_right').html(wheelDropData.wheel_drop_right.toString());
-	});
-
-	var ctx = $("#motion_graph");
-	var chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-			labels: ["January", "February", "March", "April", "May", "June", "July"],
-	    datasets: [{
-	            label: "Position",
-	            fill: false,
-	            lineTension: 0.1,
-	            backgroundColor: "rgba(75,192,192,0.4)",
-	            borderColor: "rgba(75,192,192,1)",
-	            borderCapStyle: 'butt',
-	            borderDash: [],
-	            borderDashOffset: 0.0,
-	            borderJoinStyle: 'miter',
-	            pointBorderColor: "rgba(75,192,192,1)",
-	            pointBackgroundColor: "#fff",
-	            pointBorderWidth: 1,
-	            pointHoverRadius: 5,
-	            pointHoverBackgroundColor: "rgba(75,192,192,1)",
-	            pointHoverBorderColor: "rgba(220,220,220,1)",
-	            pointHoverBorderWidth: 2,
-	            pointRadius: 1,
-	            pointHitRadius: 10,
-	            data: [65, 59, 80, 81, 56, 55, 40],
-	            spanGaps: false,
-	        }
-				]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        },
-				responsive: false
-    }
 	});
 });
 
