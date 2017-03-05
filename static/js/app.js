@@ -47,16 +47,16 @@ $(document).ready(function() {
 							 position: 'bottom',
 							 type: 'linear',
 							 ticks: {
-									 min: -80,
-									 max: 80,
-									 stepSize: 10
+									 min: -200,
+									 max: 200,
+									 stepSize: 20
 							 }
 					 }],
 						yAxes: [{
                 ticks: {
-                    max: 80,
-                    min: -80,
-                    stepSize: 10
+                    max: 200,
+                    min: -200,
+                    stepSize: 20
                 }
             }]
 		    }
