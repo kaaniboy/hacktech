@@ -28,7 +28,7 @@ RIGHT_ENCODER = 44
 SENSORS_LIST = [DISTANCE, ANGLE, CLIFF_LEFT, CLIFF_FRONT_LEFT, CLIFF_FRONT_RIGHT, CLIFF_RIGHT, BUMPER, WHEEL_DROP, WALL, VELOCITY_LEFT, VELOCITY_RIGHT, LEFT_ENCODER, RIGHT_ENCODER]
 
 
-URL = 'https://twilio-plays-roomba.herokuapp.com/next';
+URL = 'https://twilio-plays.herokuapp.com/next';
 
 config = {
 	"apiKey": "AIzaSyD7Br51b3F296kpbD3PcvRbaz1jYaL_Oi8",
@@ -82,7 +82,7 @@ def read_sensors():
 			"angle": sensors.angle,
 			"distance": sensors.distance
 		},
-		"sensors/bumper/": {
+		"bumper/": {
 			"bumper_center_left": sensors.bumper_center_left,
 			"bumper_center_right": sensors.bumper_center_right,
 			"bumper_front_left": sensors.bumper_front_left,
@@ -90,21 +90,21 @@ def read_sensors():
 			"bumper_left": sensors.bumper_left,
 			"bumper_right": sensors.bumper_right
 		},
-		"sensors/cliff/": {
+		"cliff/": {
 			"cliff_front_left": sensors.cliff_front_left,
 			"cliff_front_right": sensors.cliff_front_right,
 			"cliff_left": sensors.cliff_left,
 			"cliff_right": sensors.cliff_right
 		},
-		"sensors/encoder/": {
+		"encoder/": {
 			"encoder_left": sensors.encoder_left,
 			"encoder_right": sensors.encoder_right
 		},
-		"sensors/velocity/": {
+		"velocity/": {
 			"wheel_left_velocity": sensors.requested_left_velocity,
 			"wheel_right_velocity": sensors.requested_right_velocity
 		},
-		"sensors/wheel_drop/": {
+		"wheel_drop/": {
 			"wheel_drop_left": sensors.wheel_drop_left,
 			"wheel_drop_right": sensors.wheel_drop_right
 		}
