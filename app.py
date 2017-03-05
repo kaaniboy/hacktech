@@ -60,7 +60,7 @@ def roomba_command():
 	if body.lower() == 'howto':
 		message = help_message
 	elif not validate(body):
-		message = 'Invalid command try again \n\n {}'.format(help_message)
+		message = 'Invalid command: \n\n {}'.format(help_message)
 	else:
 		task_q.append(body)
 	twilio_resp.message(message)
