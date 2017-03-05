@@ -2,6 +2,8 @@ import requests
 import time
 from roomba.create2 import Create2
 import pyrebase
+from subprocess import call
+import random, string
 
 roomba = Create2()
 roomba.start()
@@ -116,12 +118,19 @@ def read_sensors():
 
 	db.update(data)
 
+def randomword(length):
+	return ''.join(random.choice(string.lowercase) for i in range(length))
+
 def take_photo():
-	
+	file_name = randomword(10) + '.jpg'	
+	call(['fswebcam', file_name])
+	storage.child("images/" + file_name).put(file_name)
 
 def start_client():
 	count = 0
+	take_photo()
 
+	'''
 	while True:
 		if count % 4 == 0:
 			read_sensors()
@@ -143,7 +152,7 @@ def start_client():
 			continue
 
 		count = count + 1
-		time.sleep(1)
+		time.sleep(1)'''
 
 
 if __name__ == '__main__':
