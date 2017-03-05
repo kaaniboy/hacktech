@@ -135,6 +135,8 @@ def start_client():
 	while True:
 		if count % 4 == 0:
 			read_sensors()
+		if count % 5 == 0:
+			take_photo()
 		try:
 			res = requests.get(URL).json()
 			if 'command' in res:
