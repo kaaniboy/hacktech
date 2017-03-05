@@ -19,9 +19,19 @@ var config = {
 $(document).ready(function() {
 	firebase.initializeApp(config);
 	var db = firebase.database();
+	var storage = firebase.storage();
 
 	retrieveQueue();
 	setInterval(retrieveQueue, QUEUE_INTERVAL);
+
+	db.ref('newest_image/').on('value', function(snapshot) {
+		console.log(snapshot.val().image_name);
+
+		storage.ref('images/' + snapshot.val().image_name).getDownloadURL().then(function(url) {
+			console.log(url);
+			$('#stream').attr('src', url);
+		});
+	});
 
 	db.ref('bumper/').on('value', function(snapshot) {
 		console.log(snapshot.val());
