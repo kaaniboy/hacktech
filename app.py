@@ -46,7 +46,7 @@ backward [speed]: moves the roomba backward at the given speed.
 def validate(message):
 	try:
 		command, degree = message.split()
-		if command not in ['forward', 'backward', 'turn-', 'turn'] or float(degree) < 0:
+		if command.lower() not in ['forward', 'backward', 'turn-', 'turn'] or float(degree) < 0:
 			return False
 	except Exception as e:
 		return False
@@ -62,7 +62,7 @@ def roomba_command():
 	elif not validate(body):
 		message = 'Invalid command: \n\n {}'.format(help_message)
 	else:
-		task_q.append(body)
+		task_q.append(body.lower())
 	twilio_resp.message(message)
 	return str(twilio_resp)
 
