@@ -6,7 +6,6 @@ import pyrebase
 roomba = Create2()
 roomba.start()
 roomba.safe()
-roomba.full()
 
 DISTANCE = 19
 ANGLE = 20
@@ -113,13 +112,14 @@ def read_sensors():
 		}
 	}
 
+	print(str(data))
 	db.update(data)
 
 def start_client():
 	count = 0
 
 	while True:
-		if count % 2 == 0:
+		if count % 4 == 0:
 			read_sensors()
 		try:
 			res = requests.get(URL).json()
