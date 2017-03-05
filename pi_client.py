@@ -187,18 +187,18 @@ def read_sensors():
 	db.update(data)
 
 def analyzeImage(filename):
-    try:
-    	f = open(filename, "rb")
-        body = f.read()
-        f.close()
-        conn = httplib.HTTPSConnection('westus.api.cognitive.microsoft.$
-        conn.request("POST", "/vision/v1.0/analyze?%s" % params, body, $
-        response = conn.getresponse()
-        data = response.read()
-        results = db.child("vision").update({"data": json.loads(data)})
-        conn.close()
+	try:
+    		f = open(filename, "rb")
+        	body = f.read()
+        	f.close()
+        	conn = httplib.HTTPSConnection('westus.api.cognitive.microsoft.com')
+        	conn.request("POST", "/vision/v1.0/analyze?%s" % params, body, headers)
+        	response = conn.getresponse()
+        	data = response.read()
+        	results = db.child("vision").update({"data": json.loads(data)})
+        	conn.close()
 	except Exception as e:
-        print("[Errno {0}] {1}".format(e.errno, e.strerror))
+        	print("[Errno {0}] {1}".format(e.errno, e.strerror))
 
 def randomword(length):
 	return ''.join(random.choice(string.lowercase) for i in range(length))
