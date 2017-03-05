@@ -57,31 +57,40 @@ def approx_dist(input):
 	return 0.05186 * input + 2.452
 
 def to_rad(degrees):
-	return degrees * math.PI / 180
+	return degrees * math.pi / 180
 
-def update_position(dist, angle):
-	if angle > 0 and angle < 90:
-		x = x + dist * math.sin(to_rad(angle))
-		y = y + dist * math.cos(to_rad(angle))
-	elif angle > 90 and angle < 180:
-		x = x + dist * math.cos(to_rad(angle - 90))
-		y = y - dist * math.sin(to_rad(angle - 90))
-	elif angle > 180 and angle < 270:
-		x = x - dist * math.cos(to_rad(angle - 180))
-		y = y - dist * math.sin(to_rad(angle - 180))
-	elif angle > 270 and angle < 360:
-		x = x - dist * math.cos(to_rad(angle - 270))
-		y = y + dist * math.sin(to_rad(angle - 270))
-	elif angle == 0:
+def update_position(dist, ang):
+	global x
+	global y
+
+	if ang > 0 and ang < 90:
+		x = x + dist * math.sin(to_rad(ang))
+		y = y + dist * math.cos(to_rad(ang))
+	elif ang > 90 and ang < 180:
+		x = x + dist * math.cos(to_rad(ang - 90))
+		y = y - dist * math.sin(to_rad(ang - 90))
+	elif ang > 180 and ang < 270:
+		x = x - dist * math.cos(to_rad(ang - 180))
+		y = y - dist * math.sin(to_rad(ang - 180))
+	elif ang > 270 and ang < 360:
+		x = x - dist * math.cos(to_rad(ang - 270))
+		y = y + dist * math.sin(to_rad(ang - 270))
+	elif ang == 0:
 		y = y + dist
-	elif angle == 90:
+	elif ang == 90:
 		x = x + dist
-	elif angle == 180:
+	elif ang == 180:
 		y = y - dist
-	elif angle == 270:
+	elif ang == 270:
 		x = x - dist
+	
+	print("Angle: ", ang)
+	print("X: ", x)
+	print("Y: ", y)
 
 def run_command(message):
+	global angle
+
 	try:
 		command, degree = message.split()
 		command = command.lower()
@@ -101,7 +110,13 @@ def run_command(message):
 			time.sleep(0.5)
 		elif command == 'turn-':
 			roomba.counterclockwise(degree)
-			angle = math.abs(angle - approx_angle(degree))
+			
+			if angle - approx_angle(degree) < 0:
+				angle = angle + 360 - approx_angle(degree)
+			else:
+				angle = angle - approx_angle(degree)
+
+			angle = abs(angle - approx_angle(degree))
 			time.sleep(0.5)
 		else:
 			print("Not a valid command: {}".format(message))
