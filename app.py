@@ -34,13 +34,13 @@ Twilio Plays Roomba!
 
 COMMANDS:
 
-turn [degree] : turns the roomba X number of positive degrees
+turn [speed] : turns the Roomba clockwise at the given speed.
 
-turn- [degree] : turns the roomba X number of negative degrees
+turn- [speed] : turns the Roomba counterclockwise at the given speed.
 
-forward : moves the roomba forward
+forward [speed]: moves the roomba forward at the given speed.
 
-backward : moves the roomba backward
+backward [speed]: moves the roomba backward at the given speed.
 '''
 
 def validate(message):
@@ -56,7 +56,7 @@ def validate(message):
 def roomba_command():
 	twilio_resp = twiml.Response()
 	body = request.form['Body']
-	message = 'Command valid and queued to roomba! Text howto to see all the commands'
+	message = 'Command sent to Roomba! Text "howto" to view all commands.'
 	if body.lower() == 'howto':
 		message = help_message
 	elif not validate(body):
