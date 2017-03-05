@@ -66,9 +66,17 @@ $(document).ready(function() {
 	retrieveQueue();
 	setInterval(retrieveQueue, QUEUE_INTERVAL);
 
-	db.ref('newest_image/').on('value', function(snapshot) {
-		console.log(snapshot.val().image_name);
+	db.ref('vision/').on('value', function(snapshot) {
+		var data = snapshot.val();
+		var res = "";
+		data.data.categories.forEach(function(item) {
+			res = res + " " + item.name;
+		});
+		$('#vision').html(res);
+		console.log(data);
+	});
 
+	db.ref('newest_image/').on('value', function(snapshot) {
 		storage.ref('images/' + snapshot.val().image_name).getDownloadURL().then(function(url) {
 			console.log(url);
 			$('#stream').attr('src', url);
@@ -85,11 +93,9 @@ $(document).ready(function() {
 
 		chart.data.datasets[0].data.push(newData);
 		chart.update();
-		console.log(data);
 	});
 
 	db.ref('bumper/').on('value', function(snapshot) {
-		console.log(snapshot.val());
 		bumperData = snapshot.val();
 
 		$('#bumper_center_left').html(bumperData.bumper_center_left.toString());
