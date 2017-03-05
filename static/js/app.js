@@ -1,4 +1,4 @@
-var QUEUE_URL = 'https://twilio-plays-roomba.herokuapp.com/queue';
+var QUEUE_URL = 'https://twilio-plays.herokuapp.com/queue';
 var QUEUE_INTERVAL = 5000;
 
 var bumperData;
