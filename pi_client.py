@@ -5,6 +5,7 @@ import pyrebase
 from subprocess import call
 import random, string
 import math
+import httplib, urllib, base64, json
 
 roomba = Create2()
 roomba.start()
@@ -42,6 +43,17 @@ config = {
 	"databaseURL": "https://hacktech2017-2d0d8.firebaseio.com",
 	"storageBucket": "hacktech2017-2d0d8.appspot.com"
 }
+
+headers = {
+    'Content-Type': 'application/octet-stream',
+    'Ocp-Apim-Subscription-Key': '412f4f821283482ab9bd2fe62ca387b6',
+}
+
+params = urllib.urlencode({
+    'visualFeatures': 'Categories',
+    'details': 'Celebrities',
+    'language': 'en',
+})
 
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
@@ -174,6 +186,20 @@ def read_sensors():
 
 	db.update(data)
 
+def analyzeImage(filename):
+    try:
+    	f = open(filename, "rb")
+        body = f.read()
+        f.close()
+        conn = httplib.HTTPSConnection('westus.api.cognitive.microsoft.$
+        conn.request("POST", "/vision/v1.0/analyze?%s" % params, body, $
+        response = conn.getresponse()
+        data = response.read()
+        results = db.child("vision").update({"data": json.loads(data)})
+        conn.close()
+	except Exception as e:
+        print("[Errno {0}] {1}".format(e.errno, e.strerror))
+
 def randomword(length):
 	return ''.join(random.choice(string.lowercase) for i in range(length))
 
@@ -182,6 +208,7 @@ def take_photo():
 	call(['fswebcam', file_name])
 	storage.child("images/" + file_name).put(file_name)
 	db.child("newest_image/").update({"image_name": file_name})
+	analyzeImage(file_name)
 
 def start_client():
 	count = 0
