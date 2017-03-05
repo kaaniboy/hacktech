@@ -31,6 +31,11 @@ $(document).ready(function() {
 		data: {
 		    datasets: [{
 						pointBackgroundColor: "red",
+						backgroundColor: "red",
+						lineTension: 0,
+						bezierCurve: false,
+						fill: false,
+						tension: 0,
 		        label: 'Roomba Position',
 		        data: []
 		    }]
