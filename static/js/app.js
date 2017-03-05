@@ -33,6 +33,11 @@ $(document).ready(function() {
 		});
 	});
 
+	db.ref('roomba_position/').on('value', function(snapshot) {
+		var data = snapshot.val();
+		console.log(data);
+	});
+
 	db.ref('bumper/').on('value', function(snapshot) {
 		console.log(snapshot.val());
 		bumperData = snapshot.val();

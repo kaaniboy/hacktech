@@ -83,10 +83,12 @@ def update_position(dist, ang):
 		y = y - dist
 	elif ang == 270:
 		x = x - dist
-	
+
 	print("Angle: ", ang)
 	print("X: ", x)
 	print("Y: ", y)
+
+	db.child('/roomba_position').update({'x': x, 'y': y})
 
 def run_command(message):
 	global angle
@@ -110,7 +112,7 @@ def run_command(message):
 			time.sleep(0.5)
 		elif command == 'turn-':
 			roomba.counterclockwise(degree)
-			
+
 			if angle - approx_angle(degree) < 0:
 				angle = angle + 360 - approx_angle(degree)
 			else:
