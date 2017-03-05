@@ -56,19 +56,22 @@ def run_command(message):
 		print("Running command: {}".format(message))
 		if command == 'forward':
 			roomba.straight(degree)
+			time.sleep(1.5)
 		elif command == 'backward':
 			roomba.straight(-1 * degree)
+			time.sleep(1.5)
 		elif command == 'turn':
 			roomba.clockwise(degree)
+			time.sleep(0.5)
 		elif command == 'turn-':
 			roomba.counterclockwise(degree)
+			time.sleep(0.5)
 		else:
 			print("Not a valid command: {}".format(message))
 	except Exception as e:
 		print e
 		print("Error when sending message: {}".format(message))
 	finally:
-		time.sleep(1)
 		roomba.drive(0, 0)
 
 def validate(message):
