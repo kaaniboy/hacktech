@@ -68,7 +68,7 @@ def run_command(message):
 		print e
 		print("Error when sending message: {}".format(message))
 	finally:
-		time.sleep(0.5)
+		time.sleep(1)
 		roomba.drive(0, 0)
 
 def validate(message):
@@ -129,9 +129,7 @@ def take_photo():
 
 def start_client():
 	count = 0
-	take_photo()
 
-	'''
 	while True:
 		if count % 4 == 0:
 			read_sensors()
@@ -155,7 +153,7 @@ def start_client():
 			continue
 
 		count = count + 1
-		time.sleep(1)'''
+		time.sleep(1)
 
 
 if __name__ == '__main__':
