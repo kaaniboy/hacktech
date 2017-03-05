@@ -42,6 +42,7 @@ config = {
 
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
+storage = firebase.storage()
 
 #results = db.child("sensors").update({"distance": 8})
 
@@ -115,11 +116,14 @@ def read_sensors():
 
 	db.update(data)
 
+def take_photo():
+	
+
 def start_client():
 	count = 0
 
 	while True:
-		if count % 2 == 0:
+		if count % 4 == 0:
 			read_sensors()
 		try:
 			res = requests.get(URL).json()
@@ -132,7 +136,7 @@ def start_client():
 					print("Invalid command.")
 			else:
 				print('No commands in the queue.')
-				
+
 		except Exception as e:
 			print e
 			print 'Invalid request to Twilio'

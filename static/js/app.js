@@ -1,5 +1,5 @@
 var QUEUE_URL = 'https://twilio-plays.herokuapp.com/queue';
-var QUEUE_INTERVAL = 5000;
+var QUEUE_INTERVAL = 800;
 
 var bumperData;
 var cliffData;
