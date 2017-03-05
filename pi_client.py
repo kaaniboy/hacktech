@@ -125,6 +125,7 @@ def take_photo():
 	file_name = randomword(10) + '.jpg'	
 	call(['fswebcam', file_name])
 	storage.child("images/" + file_name).put(file_name)
+	db.child("newest_image/").update({"image_name": file_name})
 
 def start_client():
 	count = 0
