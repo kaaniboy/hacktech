@@ -37,6 +37,7 @@
     <script src="{{ url_for('static', filename='js/toastr.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap-tagsinput.js') }}"></script>
     <script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -186,6 +187,10 @@
               <img id="stream" src="https://cdn.shutterstock.com/shutterstock/videos/3981127/thumb/11.jpg" class="img-responsive">
             </div>
         </div>
+        <div class="text-center">
+          <canvas class="text-center" id="motion_graph" width="800" height="400"></canvas>
+        </div>
+
     </section>
     <section class="bg-primary" id="code">
         <div class="container">

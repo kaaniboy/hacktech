@@ -4,6 +4,7 @@ from roomba.create2 import Create2
 import pyrebase
 from subprocess import call
 import random, string
+import math
 
 roomba = Create2()
 roomba.start()
@@ -46,7 +47,39 @@ firebase = pyrebase.initialize_app(config)
 db = firebase.database()
 storage = firebase.storage()
 
-#results = db.child("sensors").update({"distance": 8})
+x = 0
+y = 0
+angle = 0
+
+def approx_angle(input):
+	return 0.1778 * input + 16.46
+def approx_dist(input):
+	return 0.05186 * input + 2.452
+
+def to_rad(degrees):
+	return degrees * math.PI / 180
+
+def update_position(dist, angle):
+	if angle > 0 and angle < 90:
+		x = x + dist * math.sin(to_rad(angle))
+		y = y + dist * math.cos(to_rad(angle))
+	elif angle > 90 and angle < 180:
+		x = x + dist * math.cos(to_rad(angle - 90))
+		y = y - dist * math.sin(to_rad(angle - 90))
+	elif angle > 180 and angle < 270:
+		x = x - dist * math.cos(to_rad(angle - 180))
+		y = y - dist * math.sin(to_rad(angle - 180))
+	elif angle > 270 and angle < 360:
+		x = x - dist * math.cos(to_rad(angle - 270))
+		y = y + dist * math.sin(to_rad(angle - 270))
+	elif angle == 0:
+		y = y + dist
+	elif angle == 90:
+		x = x + dist
+	elif angle == 180:
+		y = y - dist
+	elif angle == 270:
+		x = x - dist
 
 def run_command(message):
 	try:
@@ -56,15 +89,19 @@ def run_command(message):
 		print("Running command: {}".format(message))
 		if command == 'forward':
 			roomba.straight(degree)
+			update_position(approx_dist(degree), angle)
 			time.sleep(1.5)
 		elif command == 'backward':
 			roomba.straight(-1 * degree)
+			update_position(-1 * approx_dist(degree), angle)
 			time.sleep(1.5)
 		elif command == 'turn':
 			roomba.clockwise(degree)
+			angle = (angle + approx_angle(degree)) % 360
 			time.sleep(0.5)
 		elif command == 'turn-':
 			roomba.counterclockwise(degree)
+			angle = math.abs(angle - approx_angle(degree))
 			time.sleep(0.5)
 		else:
 			print("Not a valid command: {}".format(message))
@@ -125,7 +162,7 @@ def randomword(length):
 	return ''.join(random.choice(string.lowercase) for i in range(length))
 
 def take_photo():
-	file_name = randomword(10) + '.jpg'	
+	file_name = randomword(10) + '.jpg'
 	call(['fswebcam', file_name])
 	storage.child("images/" + file_name).put(file_name)
 	db.child("newest_image/").update({"image_name": file_name})
